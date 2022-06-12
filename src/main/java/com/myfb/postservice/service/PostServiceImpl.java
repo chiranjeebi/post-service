@@ -20,7 +20,7 @@ public class PostServiceImpl  implements PostService{
     @Override
     public PostDTO createPostDTO(PostDTO postDTO) {
 
-        PostEntity postEntity= null;
+        PostEntity postEntity= new PostEntity();
         BeanUtils.copyProperties(postDTO,postEntity);//convert post  dto to entitiy and save to postrepository
     postEntity =    postRepository.save(postEntity); //after converting save entity obj to post entity
         BeanUtils.copyProperties(postEntity,postDTO);
