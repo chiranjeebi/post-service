@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,15 +77,19 @@ BeanUtils.copyProperties(optEntity.get(),postDTO);
         return postDTOS;
     }
 
-@GetMapping("/post/comments/{postId}")
+
+    //@GetMapping("/post/comments/{postId}")
+    @Override
     public CommentDTO[] getAllCommentsForPostId(Long postId){
 
         HttpHeaders headers= new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-  //HttpEntity<CommentDTO[]> httpEntity =new HttpEntity<>(headers );
 
-    CommentDTO[]  comments= restTemplate.getForObject(this.postBaseUrl+"https://jsonplaceholder.typicode.com/post/{postId}/comments", CommentDTO[].class,postId); //doing concatination with post baseurl
-System.out.println(comments.length);
-return comments;
+    HttpEntity<CommentDTO[]> httpEntity =new HttpEntity<>(headers );
+    //CommentDTO[]  comments= restTemplate.getForObject(this.postBaseUrl+"https://jsonplaceholder.typicode.com/post/{postId}/comments", CommentDTO[].class,postId); //doing concatination with post baseurl
+    ResponseEntity<CommentDTO[]> comments=restTemplate.getForEntity(this.postBaseUrl+"https://jsonplaceholder.typicode.com/post/{postId}/comments", CommentDTO[].class,postId);
+    System.out.println(comments.getBody().length);
+    System.out.println(comments);
+return comments.getBody();
     }
 }
