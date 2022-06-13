@@ -1,9 +1,12 @@
 package com.myfb.postservice.controller;
 
+import com.myfb.postservice.client.CommentDTO;
 import com.myfb.postservice.dto.PostDTO;
 import com.myfb.postservice.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,18 +37,13 @@ public class PostController {
 }
 
 
-@GetMapping("/post/user/{userId}")
-    public  ResponseEntity<List<PostDTO>> getAllPostUserId(@PathVariable Long userId) {
+    @GetMapping("/post/comments/{postId}")
+    public CommentDTO[] getAllCommentsForPostId(@PathVariable Long postId){
 
-        ResponseEntity<List<PostDTO>> responseEntity=null;
-             List<PostDTO> allPostUserId=  postService.getAllPostUserId(userId);
-    responseEntity= new ResponseEntity<>(allPostUserId,HttpStatus.CREATED);
-    return responseEntity;
-}
+        CommentDTO[]  comments=postService.getAllCommentsForPostId(postId);
+        System.out.println(comments.length);
 
-
-
-
+    }
 
 
 }

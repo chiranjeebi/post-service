@@ -1,12 +1,18 @@
 package com.myfb.postservice.service;
 
+import com.myfb.postservice.client.CommentDTO;
 import com.myfb.postservice.dto.PostDTO;
 import com.myfb.postservice.entity.PostEntity;
 import com.myfb.postservice.repository.PostRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +21,8 @@ import java.util.Optional;
 @Service                 // don't forget to add this otherwise it not gonna created Singleton Bean for postservice
 public class PostServiceImpl  implements PostService{
 
+    @Autowired
+    private RestTemplate restTemplate;
     @Autowired
     private PostRepository postRepository;
     @Override
@@ -61,5 +69,15 @@ BeanUtils.copyProperties(optEntity.get(),postDTO);
         }
 
         return postDTOS;
+    }
+
+@GetMapping("/post/comments/{postId}")
+    public CommentDTO[] getAllCommentsForPostId(Long postId){
+    HttpHeaders headers= new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+   // HttpEntity<CommentDTO[]> httpEntity =new HttpEntity<>(headers );
+CommentDTO[]  comments= restTemplate.getForObject(this.postBaseUrl+"/post/comments/{postId}",CommentDTO[].class,postId);
+System.out.println(comments.length);
+return  comments;
     }
 }
