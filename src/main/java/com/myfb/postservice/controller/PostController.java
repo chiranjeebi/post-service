@@ -38,7 +38,7 @@ public class PostController {
 
 
     @GetMapping("/post/comments/{postId}")
-    public CommentDTO[] getAllCommentsForPostId(@PathVariable Long postId){
+    public void getAllCommentsForPostId(@PathVariable Long postId){
 
         CommentDTO[]  comments=postService.getAllCommentsForPostId(postId);
         System.out.println(comments.length);

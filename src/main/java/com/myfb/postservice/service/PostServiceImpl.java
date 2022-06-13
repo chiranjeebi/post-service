@@ -6,6 +6,7 @@ import com.myfb.postservice.entity.PostEntity;
 import com.myfb.postservice.repository.PostRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,6 +21,10 @@ import java.util.Optional;
 
 @Service                 // don't forget to add this otherwise it not gonna created Singleton Bean for postservice
 public class PostServiceImpl  implements PostService{
+
+
+    @Value("${rest.call.connection.timeout:}") //configure in application local profile
+    private String postBaseUrl;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -73,11 +78,13 @@ BeanUtils.copyProperties(optEntity.get(),postDTO);
 
 @GetMapping("/post/comments/{postId}")
     public CommentDTO[] getAllCommentsForPostId(Long postId){
-    HttpHeaders headers= new HttpHeaders();
+
+        HttpHeaders headers= new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-   // HttpEntity<CommentDTO[]> httpEntity =new HttpEntity<>(headers );
-CommentDTO[]  comments= restTemplate.getForObject(this.postBaseUrl+"/post/comments/{postId}",CommentDTO[].class,postId);
+  //HttpEntity<CommentDTO[]> httpEntity =new HttpEntity<>(headers );
+
+    CommentDTO[]  comments= restTemplate.getForObject(this.postBaseUrl"https://jsonplaceholder.typicode.com/post/{postId}/comments", CommentDTO[].class,postId); //doing concatination with post baseurl
 System.out.println(comments.length);
-return  comments;
+return comments;
     }
 }
