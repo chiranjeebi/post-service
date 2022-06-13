@@ -23,7 +23,7 @@ import java.util.Optional;
 public class PostServiceImpl  implements PostService{
 
 
-    @Value("${rest.call.connection.timeout:}") //configure in application local profile
+    @Value("${postapi.base.url:}") //configure in application local profile
     private String postBaseUrl;
 
     @Autowired
@@ -83,7 +83,7 @@ BeanUtils.copyProperties(optEntity.get(),postDTO);
     headers.setContentType(MediaType.APPLICATION_JSON);
   //HttpEntity<CommentDTO[]> httpEntity =new HttpEntity<>(headers );
 
-    CommentDTO[]  comments= restTemplate.getForObject(this.postBaseUrl"https://jsonplaceholder.typicode.com/post/{postId}/comments", CommentDTO[].class,postId); //doing concatination with post baseurl
+    CommentDTO[]  comments= restTemplate.getForObject(this.postBaseUrl+"https://jsonplaceholder.typicode.com/post/{postId}/comments", CommentDTO[].class,postId); //doing concatination with post baseurl
 System.out.println(comments.length);
 return comments;
     }
